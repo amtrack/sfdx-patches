@@ -75,6 +75,11 @@ export class PackageInstallCommand extends ToolbeltCommand {
       required: false,
       default: 'Mixed',
       options: ['DeprecateOnly', 'Mixed', 'Delete']
+    }),
+    automapprofiles: flags.boolean({
+      description: 'automatically map profiles based on their name',
+      longDescription: 'automatically map profiles based on their name',
+      required: false
     })
   };
 

@@ -296,6 +296,9 @@
      this.packageInstallRequest.nameConflictResolution = 'Block';
      this.packageInstallRequest.packageInstallSource = 'U';
      this.packageInstallRequest.enableRss = enableExternalSites;
+     if (context.flags.automapprofiles) {
+      this.packageInstallRequest.profileMappings = await this._getProfileMappings();
+     }
 
      const result = await this.force.toolingCreate(this.org, 'PackageInstallRequest', this.packageInstallRequest);
 
@@ -360,6 +363,57 @@
 
      return subscriberPackageValues;
    }
+
+   async _getProfileMappings() {
+      const QUERY_NO_KEY =
+        'SELECT Profiles FROM SubscriberPackageVersion' +
+        ` WHERE Id ='${this.allPackageVersionId}'`;
+
+      const escapedInstallationKey =
+        this.installationKey != null ? this.installationKey.replace(/\\/g, '\\\\').replace(/\'/g, "\\'") : null;
+      const QUERY_W_KEY =
+        'SELECT Profiles FROM SubscriberPackageVersion' +
+        ` WHERE Id ='${this.allPackageVersionId}' AND InstallationKey ='${escapedInstallationKey}'`;
+
+      let queryResult = null;
+      try {
+        queryResult = await this.force.toolingQuery(this.org, util.format(QUERY_W_KEY));
+      } catch (e) {
+        // Check first for Implementation Restriction error that is enforced in 214, before it was possible to query
+        // against InstallationKey, otherwise surface the error.
+        if (pkgUtils.isErrorFromSPVQueryRestriction(e)) {
+          queryResult = await this.force.toolingQuery(this.org, util.format(QUERY_NO_KEY));
+        } else {
+          if (!pkgUtils.isErrorPackageNotAvailable(e)) {
+            throw e;
+          }
+        }
+      }
+
+      const result = queryResult.records[0];
+      const regexNoProfile = /^__.*__$/;
+      const sourceProfiles = result?.Profiles?.sourceProfiles?.filter(x => !regexNoProfile.test(x.value)).map(x => x.value);
+      const profileMappings = [];
+      this.logger.log(`Trying to map ${sourceProfiles.length} Profiles: ${JSON.stringify(sourceProfiles)}`);
+      const unmappedProfiles = [];
+      for (const sourceProfile of sourceProfiles) {
+        const destinationProfile = result?.Profiles?.destinationProfiles.find(x => x.name === sourceProfile);
+        if (destinationProfile?.profileId) {
+          profileMappings.push({
+            source: destinationProfile.profileId,
+            target: sourceProfile
+          })
+        } else {
+          unmappedProfiles.push(sourceProfile);
+        }
+      }
+      if (unmappedProfiles.length > 0) {
+        this.logger.log(`WARN: Could not find the following Profiles in your org: ${JSON.stringify(unmappedProfiles)}`)
+      }
+      return {
+        profileMappings
+      }
+    }
 
    /**
     * returns a human readable message for a cli output
