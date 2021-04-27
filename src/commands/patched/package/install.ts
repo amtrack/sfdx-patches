@@ -10,8 +10,8 @@
 /* istanbul ignore file */
 
 import { flags, FlagsConfig } from '@salesforce/command';
-import Messages = require('../../../lib/messages');
-import { ToolbeltCommand } from '../../../ToolbeltCommand';
+import Messages = require('salesforce-alm/dist/lib/messages');
+import { ToolbeltCommand } from 'salesforce-alm/dist/ToolbeltCommand';
 
 const messages = Messages();
 
@@ -80,7 +80,9 @@ export class PackageInstallCommand extends ToolbeltCommand {
 
   public async run(): Promise<unknown> {
     const context = await this.resolveLegacyContext();
-    const PackageInstallCommand = require('../../../lib/package/packageInstallCommand');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const PackageInstallCommand = require('../../../packageInstallCommand');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const heroku = require('heroku-cli-util');
     return this.execLegacyCommand(new PackageInstallCommand(heroku.prompt), context);
   }

@@ -14,18 +14,21 @@
  import * as BBPromise from 'bluebird';
  import * as _ from 'lodash';
  import * as util from 'util';
+ import path = require('path');
 
  // New messages (move to this)
  import { Messages } from '@salesforce/core';
- Messages.importMessagesDirectory(__dirname);
+//  Messages.importMessagesDirectory(__dirname);
+ Messages.importMessagesDirectory(path.dirname(require.resolve('salesforce-alm')));
+
  const packagingMessages = Messages.loadMessages('salesforce-alm', 'packaging');
 
  // Old style messages
- import MessagesLocal = require('../messages');
+ import MessagesLocal = require('salesforce-alm/dist/lib/messages');
  const messages = MessagesLocal();
 
- import logger = require('../core/logApi');
- import pkgUtils = require('../package/packageUtils');
+ import logger = require('salesforce-alm/dist/lib/core/logApi');
+ import pkgUtils = require('salesforce-alm/dist/lib/package/packageUtils');
 
  const DEFAULT_POLL_INTERVAL_MILLIS = 5000;
  const REPLICATION_POLLING_INTERVAL_MILLIS = 10000;
