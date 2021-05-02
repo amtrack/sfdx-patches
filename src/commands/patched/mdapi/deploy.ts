@@ -11,11 +11,13 @@
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Messages } from '@salesforce/core';
-import { ToolbeltCommand } from '../../../ToolbeltCommand';
+import { ToolbeltCommand } from 'salesforce-alm/dist/ToolbeltCommand';
+import path = require('path');
 
-import consts = require('../../../lib/core/constants');
+import consts = require('salesforce-alm/dist/lib/core/constants');
 
-Messages.importMessagesDirectory(__dirname);
+// Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(path.dirname(require.resolve('salesforce-alm')));
 const messages: Messages = Messages.loadMessages('salesforce-alm', 'mdapi_deploy');
 
 export class MdapiDeployCommand extends ToolbeltCommand {
@@ -100,7 +102,7 @@ export class MdapiDeployCommand extends ToolbeltCommand {
 
   public async run(): Promise<unknown> {
     const context = await this.resolveLegacyContext();
-    const MdapiDeployCommand = require('../../../lib/mdapi/mdapiDeployCommand');
+    const MdapiDeployCommand = require('../../../mdapiDeployCommand');
     return this.execLegacyCommand(new MdapiDeployCommand(context), context);
   }
 }

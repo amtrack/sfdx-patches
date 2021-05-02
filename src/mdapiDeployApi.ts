@@ -17,13 +17,13 @@ import * as os from 'os';
 import * as BBPromise from 'bluebird';
 
 // Local
-import logger = require('../core/logApi');
-import * as almError from '../core/almError';
-import DeployReport = require('./mdapiDeployReportApi');
-import consts = require('../core/constants');
-import StashApi = require('../core/stash');
+import logger = require('salesforce-alm/dist/lib/core/logApi');
+import * as almError from 'salesforce-alm/dist/lib/core/almError';
+import DeployReport = require('salesforce-alm/dist/lib/mdapi/mdapiDeployReportApi');
+import consts = require('salesforce-alm/dist/lib/core/constants');
+import StashApi = require('salesforce-alm/dist/lib/core/stash');
 import { set } from '@salesforce/kit';
-import Stash = require('../core/stash');
+import Stash = require('salesforce-alm/dist/lib/core/stash');
 
 const DEPLOY_ERROR_EXIT_CODE = 1;
 

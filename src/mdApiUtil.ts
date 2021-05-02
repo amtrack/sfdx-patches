@@ -10,8 +10,10 @@
     We need to refactor code and probably move more MD common functionality here.
 */
 import { AuthInfo, ConfigAggregator, Connection, SfdxError, Logger, Messages } from '@salesforce/core';
+import path = require('path');
 
-Messages.importMessagesDirectory(__dirname);
+// Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(path.dirname(require.resolve('salesforce-alm')));
 
 export type MdapiDeployRecentValidationOptions = {
   validateddeployrequestid: string;
