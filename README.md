@@ -18,6 +18,7 @@ sfdx plugins:install sfdx-patches
 This plugin currently provides patches for the following basic commands:
 
 - `sfdx package:install`
+- `sfdx mdapi:deploy`
 
 ### package:install
 
@@ -31,3 +32,11 @@ Thanks to David Reed and Jeff for providing the inspiration for this solution:
 
 - https://salesforce.stackexchange.com/questions/336066/sfdx-or-api-call-to-install-package-using-profile-mapping/336067#336067
 - https://salesforce.stackexchange.com/questions/237824/how-do-i-specify-profile-mappings-on-a-packageinstallrequest
+
+### mdapi:deploy
+
+added flags
+
+- `--purgeondelete`: don't store deleted components in the recycle bin
+
+Usage: `sfdx patched:mdapi:deploy --purgeondelete`
