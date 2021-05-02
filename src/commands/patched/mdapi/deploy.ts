@@ -97,6 +97,10 @@ export class MdapiDeployCommand extends ToolbeltCommand {
       description: messages.getMessage('mdDeploySoapDeployDescription'),
       longDescription: messages.getMessage('mdDeploySoapDeployDescriptionLong'),
       required: false
+    }),
+    purgeondelete: flags.boolean({
+      description: "don't store deleted components in the recycle bin",
+      required: false
     })
   };
 

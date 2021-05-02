@@ -31,6 +31,7 @@ export type DeployOptions = {
   ignoreWarnings?: boolean;
   checkOnly?: boolean;
   singlePackage?: boolean;
+  purgeOnDelete?: boolean;
 };
 
 export class MetadataConnection extends Connection {

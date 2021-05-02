@@ -35,7 +35,8 @@ const convertParamsToDeployOptions = function({
   autoUpdatePackage,
   checkonly,
   ignorewarnings,
-  singlepackage
+  singlepackage,
+  purgeondelete
 }) {
   const deployOptions: DeployOptions = {};
 
@@ -63,6 +64,10 @@ const convertParamsToDeployOptions = function({
 
   if (singlepackage) {
     deployOptions.singlePackage = true;
+  }
+
+  if (purgeondelete) {
+    deployOptions.purgeOnDelete = true;
   }
 
   return deployOptions;
