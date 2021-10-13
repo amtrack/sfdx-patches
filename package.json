@@ -13,7 +13,7 @@
     "@oclif/errors": "^1",
     "@salesforce/command": "3.1.0",
     "@salesforce/core": "^2",
-    "salesforce-alm": "51.6.17",
+    "salesforce-alm": "52.7.0",
     "tslib": "2.2.0"
   },
   "devDependencies": {
